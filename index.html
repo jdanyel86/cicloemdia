@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fff5f8">
-  <meta name="description" content="Estimativa do próximo ciclo menstrual e do período fértil.">
-  <!-- AdSense: após aprovação do site, substitua ca-pub-SEU-ID pelo ID de editor e habilite o carregador oficial do AdSense. -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4799423637814110"
-     crossorigin="anonymous"></script>
-  <title>Ciclo em Dia</title>
+  <meta name="description" content="Calculadora do ciclo menstrual e período fértil. Descubra a estimativa da próxima menstruação, dia da ovulação e tire dúvidas sobre saúde menstrual.">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4799423637814110" crossorigin="anonymous"></script>
+  <title>Ciclo em Dia — Calculadora do Ciclo Menstrual e Período Fértil</title>
   <style>
     :root {
       color-scheme: light;
@@ -26,7 +24,7 @@
       margin: 0;
       min-height: 100vh;
       min-height: 100dvh;
-      padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      padding: max(20px, env(safe-area-inset-top)) 16px max(32px, env(safe-area-inset-bottom));
       color: var(--ink);
       background: linear-gradient(160deg, #fff5f8, #f9f6fa 52%, #f4f7fb);
       display: flex;
@@ -53,7 +51,7 @@
     }
     input[type="number"] { max-width: 160px; }
     input:hover { border-color: var(--pink); }
-    input:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    input:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
     input[aria-invalid="true"] { border-color: var(--error); }
     .hint { margin: 7px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
     button {
@@ -66,7 +64,6 @@
     button:hover { background: var(--pink-dark); }
     button:active { transform: scale(.99); }
     #feedback { margin-top: 20px; }
-    /* Anúncio fica depois do aviso, bem longe do botão, para evitar cliques acidentais. */
     .ad-slot { margin: 48px 0 0; text-align: center; }
     .ad-slot[hidden] { display: none; }
     .ad-slot ins { display: block; width: 100%; min-height: 100px; }
@@ -79,6 +76,58 @@
     .result h2 { margin: 0 0 10px; font-size: 1.1rem; }
     .result p { margin: 7px 0; }
     .notice { margin: 22px 0 0; padding-top: 17px; border-top: 1px solid #e8d8e0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
+    
+    /* Seção de conteúdo informativo e Política de Privacidade em formato acordeão */
+    .info-section { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    details.info-box {
+      border: 1px solid rgba(165, 29, 93, .12);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .88);
+      padding: 14px 18px;
+      transition: background-color .15s ease;
+    }
+    details.info-box[open] { background: #fff; box-shadow: 0 8px 24px rgba(72, 34, 54, .05); }
+    details.info-box summary {
+      font-weight: 700;
+      color: var(--ink);
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .96rem;
+    }
+    details.info-box summary::-webkit-details-marker { display: none; }
+    details.info-box summary::after {
+      content: "+";
+      color: var(--pink);
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-left: 12px;
+    }
+    details.info-box[open] summary::after { content: "−"; }
+    .info-content {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #f0e4ea;
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+    .info-content h3 { color: var(--ink); font-size: .96rem; margin: 14px 0 6px; }
+    .info-content h3:first-child { margin-top: 0; }
+    .info-content p { margin: 0 0 10px; }
+    .info-content p:last-child { margin-bottom: 0; }
+    .info-content ul { margin: 0 0 10px; padding-left: 20px; }
+    .info-content li { margin-bottom: 6px; }
+    footer {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.5;
+    }
     @media (min-width: 600px) { body { padding-inline: 24px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
   </style>
@@ -104,15 +153,67 @@
       </form>
       <div id="feedback" aria-live="polite" aria-atomic="true"></div>
       <p class="notice"><strong>Importante:</strong> esta ferramenta fornece apenas uma estimativa. Ciclos podem variar; ela não confirma ovulação nem deve ser usada como método contraceptivo. Em caso de dúvidas, converse com um profissional de saúde.</p>
-      <!-- ADSENSE: BLOCO INFERIOR (oculto por padrão). Ao configurar no AdSense:
-           1) remova o atributo hidden do aside;
-           2) use data-ad-client="ca-pub-SEU-ID" e data-ad-slot="ID_DO_BLOCO" no elemento ins;
-           3) adicione depois do ins: <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+      <!-- ADSENSE: BLOCO INFERIOR (oculto por padrão). -->
       <aside class="ad-slot" aria-label="Publicidade" hidden>
         <p class="ad-label">Publicidade</p>
-        <!-- Exemplo: <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-SEU-ID" data-ad-slot="ID_DO_BLOCO" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+        <!-- Exemplo: <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4799423637814110" data-ad-slot="ID_DO_BLOCO" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
       </aside>
     </section>
+
+    <section class="info-section" aria-label="Informações sobre o ciclo menstrual e políticas do site">
+      <details class="info-box">
+        <summary>Como funciona o cálculo do ciclo menstrual?</summary>
+        <div class="info-content">
+          <p>O ciclo menstrual é contado a partir do <strong>primeiro dia de sangramento</strong> de uma menstruação até o dia anterior ao início da próxima. Embora a média mais conhecida seja de 28 dias, ciclos regulares em mulheres adultas podem variar normalmente entre 21 e 35 dias (e até 40 dias em algumas fases da vida).</p>
+          <p>Para estimar a próxima menstruação, a calculadora soma a duração média do seu ciclo à data do primeiro dia da última menstruação informada. Caso a data informada pertença a um ciclo anterior já concluído, a ferramenta projeta os ciclos seguintes para exibir a próxima estimativa futura.</p>
+          <h3>Fases do ciclo menstrual</h3>
+          <ul>
+            <li><strong>Fase menstrual:</strong> corresponde aos dias de sangramento, quando o revestimento do útero (endométrio) é eliminado.</li>
+            <li><strong>Fase folicular:</strong> começa no primeiro dia da menstruação e vai até a ovulação. Nesse período, os folículos ovarianos amadurecem e o útero volta a se preparar.</li>
+            <li><strong>Ovulação:</strong> liberação do óvulo maduro pelo ovário, que segue em direção às tubas uterinas.</li>
+            <li><strong>Fase lútea:</strong> período entre a ovulação e o início da próxima menstruação. Costuma ter duração mais constante, em torno de 14 dias.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="info-box">
+        <summary>O que é o período fértil e quando ocorre a ovulação?</summary>
+        <div class="info-content">
+          <p>A <strong>ovulação</strong> ocorre, em média, cerca de 14 dias antes do início da próxima menstruação (considerando uma fase lútea padrão). Em um ciclo regular de 28 dias, por exemplo, a ovulação costuma acontecer por volta do 14º dia do ciclo; já em um ciclo de 32 dias, ocorre por volta do 18º dia.</p>
+          <p>O <strong>período fértil</strong> (ou janela fértil) abrange os dias em que há maior probabilidade de gravidez. Como os espermatozoides podem sobreviver no trato reprodutor feminino por até 5 dias e o óvulo permanece viável por cerca de 24 horas após ser liberado, a janela fértil estimada compreende os <strong>5 dias anteriores à ovulação, o dia estimado da ovulação e o dia seguinte</strong>.</p>
+          <p>Sinais naturais do corpo, como o aumento da secreção vaginal transparente (semelhante à clara de ovo) e uma leve elevação na temperatura corporal basal, também costumam acompanhar essa fase.</p>
+        </div>
+      </details>
+
+      <details class="info-box">
+        <summary>Perguntas frequentes e quando procurar orientação médica</summary>
+        <div class="info-content">
+          <h3>Por que a minha menstruação pode atrasar ou variar?</h3>
+          <p>Mesmo quem possui ciclos regulares pode apresentar variações ocasionais de alguns dias. Estresse emocional, alterações na rotina de sono, viagens, mudanças na alimentação, prática intensa de exercícios físicos, uso de medicamentos, pós-parto, amamentação, adolescência e perimenopausa podem alterar o momento da ovulação e, consequentemente, a data da menstruação.</p>
+          <h3>Posso usar a calculadora para evitar gravidez?</h3>
+          <p><strong>Não.</strong> Métodos baseados apenas em calendário (como a tabelinha) possuem alta taxa de falha porque a ovulação pode adiantar ou atrasar de um mês para o outro sem aviso prévio. Para contracepção segura ou planejamento reprodutivo, consulte um profissional de saúde (médico ginecologista ou profissional de enfermagem na sua Unidade Básica de Saúde).</p>
+          <h3>Quando devo procurar atendimento de saúde?</h3>
+          <p>É recomendável buscar avaliação profissional se os ciclos forem frequentemente menores que 21 dias ou maiores que 35 dias, se houver ausência de menstruação por mais de 3 meses (sem gravidez), sangramento muito intenso ou prolongado (mais de 7 a 8 dias), sangramentos fora do período menstrual ou dores pélvicas fortes que impeçam as atividades diárias.</p>
+        </div>
+      </details>
+
+      <details class="info-box">
+        <summary>Política de Privacidade, Cookies e Termos de Uso</summary>
+        <div class="info-content">
+          <h3>1. Processamento local e privacidade dos seus dados</h3>
+          <p>O site <strong>Ciclo em Dia</strong> (<code>cicloemdia.com.br</code>) foi desenvolvido para funcionar integralmente no navegador do seu dispositivo. As datas e a duração do ciclo que você digita na calculadora são processadas apenas localmente no seu aparelho para exibir o resultado na tela e <strong>nunca são enviadas, armazenadas ou compartilhadas</strong> com servidores externos.</p>
+          <h3>2. Publicidade e uso de cookies (Google AdSense)</h3>
+          <p>Para manter a ferramenta gratuita, este site pode exibir anúncios fornecidos pelo <strong>Google AdSense</strong>. O Google e seus parceiros utilizam cookies (como o cookie DART e identificadores semelhantes) para veicular anúncios com base nas suas visitas a este e a outros sites na internet.</p>
+          <p>Você pode desativar a publicidade personalizada a qualquer momento acessando as Configurações de Anúncios da sua Conta do Google (<code>adssettings.google.com</code>) ou gerenciando as permissões de cookies diretamente no seu navegador.</p>
+          <h3>3. Caráter informativo (Isenção de responsabilidade médica)</h3>
+          <p>Todo o conteúdo e os cálculos disponibilizados no Ciclo em Dia possuem finalidade exclusivamente educativa e informativa, não substituindo consulta, diagnóstico ou orientação de médicos, enfermeiros ou outros profissionais de saúde qualificados.</p>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      <p>© Ciclo em Dia (cicloemdia.com.br) — Ferramenta informativa de saúde menstrual. Processamento 100% local no navegador.</p>
+    </footer>
   </main>
   <script>
     const formulario = document.getElementById('formulario');
@@ -143,12 +244,9 @@
       return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
     }
 
-    // Limites do seletor de data (não impedem digitação manual; a validação final é no envio).
     dataInput.max = paraISO(hojeLocal());
     dataInput.min = paraISO(limiteMinimo());
 
-    // Lê AAAA-MM-DD (campo date) ou DD/MM/AAAA (campo que virou texto em WebViews antigas).
-    // Retorna null se o formato ou a data forem inválidos (ex.: 31/02 ou ano de 2 dígitos).
     function lerDataLocal(valor) {
       const texto = String(valor).trim();
       let ano, mes, dia, m;
@@ -214,7 +312,6 @@
         return;
       }
 
-      // Se a próxima data calculada já passou, projeta os ciclos seguintes até chegar numa data futura.
       let proxima = somarDias(ultima, ciclo);
       let projetado = false;
       while (proxima < hoje) {
@@ -238,7 +335,6 @@
           <p><small>Isto é apenas uma estimativa: ciclos variam e a ferramenta não deve ser usada como método contraceptivo.</small></p>
         </section>`;
 
-      // Leva o resultado para a tela (útil em celulares com teclado aberto).
       const reduzir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       feedback.scrollIntoView({ behavior: reduzir ? 'auto' : 'smooth', block: 'nearest' });
     });
