@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-T7XP8JL4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#fff5f8">
@@ -19,7 +26,9 @@
       --success: #175c3b;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -31,7 +40,9 @@
       justify-content: center;
       align-items: flex-start;
     }
+
     main { width: min(100%, 520px); margin-block: auto; }
+
     .card {
       padding: clamp(22px, 6vw, 36px);
       border: 1px solid rgba(165, 29, 93, .12);
@@ -39,46 +50,159 @@
       background: #fff;
       box-shadow: 0 16px 45px rgba(72, 34, 54, .09);
     }
-    .eyebrow { margin: 0 0 8px; color: var(--pink-dark); font-size: .82rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
-    h1 { margin: 0; font-size: clamp(1.65rem, 7vw, 2.15rem); line-height: 1.15; }
-    .intro { margin: 12px 0 26px; color: var(--muted); line-height: 1.55; }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--pink-dark);
+      font-size: .82rem;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 7vw, 2.15rem);
+      line-height: 1.15;
+    }
+
+    .intro {
+      margin: 12px 0 26px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
     .field { margin-top: 20px; }
-    label { display: block; margin-bottom: 8px; font-weight: 700; }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
     input {
-      display: block; width: 100%; min-height: 54px; padding: 12px 14px;
-      border: 1px solid #857680; border-radius: 12px; background: #fff;
-      color: var(--ink); font: inherit; font-size: 1rem;
+      display: block;
+      width: 100%;
+      min-height: 54px;
+      padding: 12px 14px;
+      border: 1px solid #857680;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-size: 1rem;
     }
+
     input[type="number"] { max-width: 160px; }
+
     input:hover { border-color: var(--pink); }
-    input:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-    input[aria-invalid="true"] { border-color: var(--error); }
-    .hint { margin: 7px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
-    button {
-      display: block; position: relative; z-index: 1;
-      width: 100%; min-height: 54px; margin-top: 26px; padding: 13px 18px;
-      border: 0; border-radius: 14px; background: var(--pink); color: #fff;
-      font: inherit; font-size: 1.05rem; font-weight: 750; cursor: pointer;
-      transition: background-color .15s ease, transform .15s ease; touch-action: manipulation;
+
+    input:focus-visible,
+    button:focus-visible,
+    summary:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
     }
+
+    input[aria-invalid="true"] { border-color: var(--error); }
+
+    .hint {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.45;
+    }
+
+    button {
+      display: block;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 54px;
+      margin-top: 26px;
+      padding: 13px 18px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--pink);
+      color: #fff;
+      font: inherit;
+      font-size: 1.05rem;
+      font-weight: 750;
+      cursor: pointer;
+      transition: background-color .15s ease, transform .15s ease;
+      touch-action: manipulation;
+    }
+
     button:hover { background: var(--pink-dark); }
     button:active { transform: scale(.99); }
+
     #feedback { margin-top: 20px; }
-    .ad-slot { margin: 48px 0 0; text-align: center; }
+
+    .ad-slot {
+      margin: 48px 0 0;
+      text-align: center;
+    }
+
     .ad-slot[hidden] { display: none; }
-    .ad-slot ins { display: block; width: 100%; min-height: 100px; }
+
+    .ad-slot ins {
+      display: block;
+      width: 100%;
+      min-height: 100px;
+    }
+
     .ad-slot ins[data-ad-status="unfilled"] { display: none; }
     .ad-slot:has(ins[data-ad-status="unfilled"]) { display: none; }
-    .ad-label { margin: 0 0 6px; color: var(--muted); font-size: .75rem; }
-    .message, .result { padding: 16px; border-radius: 14px; line-height: 1.55; }
-    .message { color: var(--error); background: #fff0f0; border: 1px solid #f1c8cb; }
-    .result { color: var(--success); background: #effaf3; border: 1px solid #c5e6d1; }
-    .result h2 { margin: 0 0 10px; font-size: 1.1rem; }
+
+    .ad-label {
+      margin: 0 0 6px;
+      color: var(--muted);
+      font-size: .75rem;
+    }
+
+    .message,
+    .result {
+      padding: 16px;
+      border-radius: 14px;
+      line-height: 1.55;
+    }
+
+    .message {
+      color: var(--error);
+      background: #fff0f0;
+      border: 1px solid #f1c8cb;
+    }
+
+    .result {
+      color: var(--success);
+      background: #effaf3;
+      border: 1px solid #c5e6d1;
+    }
+
+    .result h2 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+    }
+
     .result p { margin: 7px 0; }
-    .notice { margin: 22px 0 0; padding-top: 17px; border-top: 1px solid #e8d8e0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
-    
+
+    .notice {
+      margin: 22px 0 0;
+      padding-top: 17px;
+      border-top: 1px solid #e8d8e0;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.55;
+    }
+
     /* Seção de conteúdo informativo e Política de Privacidade em formato acordeão */
-    .info-section { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+    .info-section {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     details.info-box {
       border: 1px solid rgba(165, 29, 93, .12);
       border-radius: 16px;
@@ -86,7 +210,12 @@
       padding: 14px 18px;
       transition: background-color .15s ease;
     }
-    details.info-box[open] { background: #fff; box-shadow: 0 8px 24px rgba(72, 34, 54, .05); }
+
+    details.info-box[open] {
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(72, 34, 54, .05);
+    }
+
     details.info-box summary {
       font-weight: 700;
       color: var(--ink);
@@ -97,7 +226,9 @@
       align-items: center;
       font-size: .96rem;
     }
+
     details.info-box summary::-webkit-details-marker { display: none; }
+
     details.info-box summary::after {
       content: "+";
       color: var(--pink);
@@ -106,7 +237,9 @@
       line-height: 1;
       margin-left: 12px;
     }
+
     details.info-box[open] summary::after { content: "−"; }
+
     .info-content {
       margin-top: 12px;
       padding-top: 12px;
@@ -115,12 +248,19 @@
       font-size: .92rem;
       line-height: 1.6;
     }
-    .info-content h3 { color: var(--ink); font-size: .96rem; margin: 14px 0 6px; }
+
+    .info-content h3 {
+      color: var(--ink);
+      font-size: .96rem;
+      margin: 14px 0 6px;
+    }
+
     .info-content h3:first-child { margin-top: 0; }
     .info-content p { margin: 0 0 10px; }
     .info-content p:last-child { margin-bottom: 0; }
     .info-content ul { margin: 0 0 10px; padding-left: 20px; }
     .info-content li { margin-bottom: 6px; }
+
     footer {
       margin-top: 24px;
       text-align: center;
@@ -128,8 +268,17 @@
       font-size: .82rem;
       line-height: 1.5;
     }
-    @media (min-width: 600px) { body { padding-inline: 24px; } }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+
+    @media (min-width: 600px) {
+      body { padding-inline: 24px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -138,25 +287,38 @@
       <p class="eyebrow">Ciclo em dia</p>
       <h1 id="titulo">Calculadora do ciclo menstrual</h1>
       <p class="intro">Informe os dados para ver uma estimativa da próxima menstruação e do período fértil.</p>
+
       <form id="formulario" novalidate>
         <div class="field">
           <label for="dataUltima">Data da última menstruação</label>
           <input type="date" id="dataUltima" name="dataUltima" required autocomplete="off" aria-describedby="ajudaData">
           <p class="hint" id="ajudaData">Use o primeiro dia do sangramento, dos últimos 12 meses. Se o campo for de texto, digite dia/mês/ano.</p>
         </div>
+
         <div class="field">
           <label for="ciclo">Duração média do ciclo (dias)</label>
           <input type="number" id="ciclo" name="ciclo" value="28" min="20" max="40" step="1" inputmode="numeric" required aria-describedby="ajudaCiclo">
           <p class="hint" id="ajudaCiclo">Informe um número inteiro entre 20 e 40 dias.</p>
         </div>
+
         <button type="submit">Calcular estimativa</button>
       </form>
+
       <div id="feedback" aria-live="polite" aria-atomic="true"></div>
+
       <p class="notice"><strong>Importante:</strong> esta ferramenta fornece apenas uma estimativa. Ciclos podem variar; ela não confirma ovulação nem deve ser usada como método contraceptivo. Em caso de dúvidas, converse com um profissional de saúde.</p>
+
       <!-- ADSENSE: BLOCO INFERIOR (oculto por padrão). -->
       <aside class="ad-slot" aria-label="Publicidade" hidden>
         <p class="ad-label">Publicidade</p>
-        <!-- Exemplo: <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4799423637814110" data-ad-slot="ID_DO_BLOCO" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+        <!-- Exemplo:
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4799423637814110"
+             data-ad-slot="ID_DO_BLOCO"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        -->
       </aside>
     </section>
 
@@ -215,6 +377,7 @@
       <p>© Ciclo em Dia (cicloemdia.com.br) — Ferramenta informativa de saúde menstrual. Processamento 100% local no navegador.</p>
     </footer>
   </main>
+
   <script>
     const formulario = document.getElementById('formulario');
     const dataInput = document.getElementById('dataUltima');
@@ -318,6 +481,7 @@
         proxima = somarDias(proxima, ciclo);
         projetado = true;
       }
+
       const ovulacao = somarDias(proxima, -14);
       const inicioFertil = somarDias(ovulacao, -5);
       const fimFertil = somarDias(ovulacao, 1);
