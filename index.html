@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff5f8">
+  <meta name="description" content="Estimativa do próximo ciclo menstrual e do período fértil.">
+  <!-- AdSense: após aprovação do site, substitua ca-pub-SEU-ID pelo ID de editor e habilite o carregador oficial do AdSense. -->
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-SEU-ID" crossorigin="anonymous"></script> -->
+  <title>Ciclo em Dia</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #30242b;
+      --muted: #685963;
+      --pink: #a51d5d;
+      --pink-dark: #811447;
+      --focus: #1457b8;
+      --error: #a51d2d;
+      --success: #175c3b;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: max(20px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+      color: var(--ink);
+      background: linear-gradient(160deg, #fff5f8, #f9f6fa 52%, #f4f7fb);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    main { width: min(100%, 520px); margin-block: auto; }
+    .card {
+      padding: clamp(22px, 6vw, 36px);
+      border: 1px solid rgba(165, 29, 93, .12);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: 0 16px 45px rgba(72, 34, 54, .09);
+    }
+    .eyebrow { margin: 0 0 8px; color: var(--pink-dark); font-size: .82rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(1.65rem, 7vw, 2.15rem); line-height: 1.15; }
+    .intro { margin: 12px 0 26px; color: var(--muted); line-height: 1.55; }
+    .field { margin-top: 20px; }
+    label { display: block; margin-bottom: 8px; font-weight: 700; }
+    input {
+      display: block; width: 100%; min-height: 54px; padding: 12px 14px;
+      border: 1px solid #857680; border-radius: 12px; background: #fff;
+      color: var(--ink); font: inherit; font-size: 1rem;
+    }
+    input[type="number"] { max-width: 160px; }
+    input:hover { border-color: var(--pink); }
+    input:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    input[aria-invalid="true"] { border-color: var(--error); }
+    .hint { margin: 7px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
+    button {
+      display: block; position: relative; z-index: 1;
+      width: 100%; min-height: 54px; margin-top: 26px; padding: 13px 18px;
+      border: 0; border-radius: 14px; background: var(--pink); color: #fff;
+      font: inherit; font-size: 1.05rem; font-weight: 750; cursor: pointer;
+      transition: background-color .15s ease, transform .15s ease; touch-action: manipulation;
+    }
+    button:hover { background: var(--pink-dark); }
+    button:active { transform: scale(.99); }
+    #feedback { margin-top: 20px; }
+    /* Anúncio fica depois do aviso, bem longe do botão, para evitar cliques acidentais. */
+    .ad-slot { margin: 48px 0 0; text-align: center; }
+    .ad-slot[hidden] { display: none; }
+    .ad-slot ins { display: block; width: 100%; min-height: 100px; }
+    .ad-slot ins[data-ad-status="unfilled"] { display: none; }
+    .ad-slot:has(ins[data-ad-status="unfilled"]) { display: none; }
+    .ad-label { margin: 0 0 6px; color: var(--muted); font-size: .75rem; }
+    .message, .result { padding: 16px; border-radius: 14px; line-height: 1.55; }
+    .message { color: var(--error); background: #fff0f0; border: 1px solid #f1c8cb; }
+    .result { color: var(--success); background: #effaf3; border: 1px solid #c5e6d1; }
+    .result h2 { margin: 0 0 10px; font-size: 1.1rem; }
+    .result p { margin: 7px 0; }
+    .notice { margin: 22px 0 0; padding-top: 17px; border-top: 1px solid #e8d8e0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
+    @media (min-width: 600px) { body { padding-inline: 24px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card" aria-labelledby="titulo">
+      <p class="eyebrow">Ciclo em dia</p>
+      <h1 id="titulo">Calculadora do ciclo menstrual</h1>
+      <p class="intro">Informe os dados para ver uma estimativa da próxima menstruação e do período fértil.</p>
+      <form id="formulario" novalidate>
+        <div class="field">
+          <label for="dataUltima">Data da última menstruação</label>
+          <input type="date" id="dataUltima" name="dataUltima" required autocomplete="off" aria-describedby="ajudaData">
+          <p class="hint" id="ajudaData">Use o primeiro dia do sangramento, dos últimos 12 meses. Se o campo for de texto, digite dia/mês/ano.</p>
+        </div>
+        <div class="field">
+          <label for="ciclo">Duração média do ciclo (dias)</label>
+          <input type="number" id="ciclo" name="ciclo" value="28" min="20" max="40" step="1" inputmode="numeric" required aria-describedby="ajudaCiclo">
+          <p class="hint" id="ajudaCiclo">Informe um número inteiro entre 20 e 40 dias.</p>
+        </div>
+        <button type="submit">Calcular estimativa</button>
+      </form>
+      <div id="feedback" aria-live="polite" aria-atomic="true"></div>
+      <p class="notice"><strong>Importante:</strong> esta ferramenta fornece apenas uma estimativa. Ciclos podem variar; ela não confirma ovulação nem deve ser usada como método contraceptivo. Em caso de dúvidas, converse com um profissional de saúde.</p>
+      <!-- ADSENSE: BLOCO INFERIOR (oculto por padrão). Ao configurar no AdSense:
+           1) remova o atributo hidden do aside;
+           2) use data-ad-client="ca-pub-SEU-ID" e data-ad-slot="ID_DO_BLOCO" no elemento ins;
+           3) adicione depois do ins: <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+      <aside class="ad-slot" aria-label="Publicidade" hidden>
+        <p class="ad-label">Publicidade</p>
+        <!-- Exemplo: <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-SEU-ID" data-ad-slot="ID_DO_BLOCO" data-ad-format="auto" data-full-width-responsive="true"></ins> -->
+      </aside>
+    </section>
+  </main>
+  <script>
+    const formulario = document.getElementById('formulario');
+    const dataInput = document.getElementById('dataUltima');
+    const cicloInput = document.getElementById('ciclo');
+    const feedback = document.getElementById('feedback');
+
+    function hojeLocal() {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function limiteMinimo() {
+      const d = hojeLocal();
+      d.setFullYear(d.getFullYear() - 1);
+      return d;
+    }
+
+    function somarDias(data, dias) {
+      const d = new Date(data);
+      d.setDate(d.getDate() + dias);
+      return d;
+    }
+
+    function paraISO(d) {
+      const p = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    }
+
+    // Limites do seletor de data (não impedem digitação manual; a validação final é no envio).
+    dataInput.max = paraISO(hojeLocal());
+    dataInput.min = paraISO(limiteMinimo());
+
+    // Lê AAAA-MM-DD (campo date) ou DD/MM/AAAA (campo que virou texto em WebViews antigas).
+    // Retorna null se o formato ou a data forem inválidos (ex.: 31/02 ou ano de 2 dígitos).
+    function lerDataLocal(valor) {
+      const texto = String(valor).trim();
+      let ano, mes, dia, m;
+      if ((m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(texto))) {
+        ano = Number(m[1]); mes = Number(m[2]); dia = Number(m[3]);
+      } else if ((m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(texto))) {
+        dia = Number(m[1]); mes = Number(m[2]); ano = Number(m[3]);
+      } else {
+        return null;
+      }
+      const data = new Date(ano, mes - 1, dia);
+      if (data.getFullYear() !== ano || data.getMonth() !== mes - 1 || data.getDate() !== dia) return null;
+      return data;
+    }
+
+    function formatarData(data) {
+      return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }).format(data);
+    }
+
+    function mostrarErro(campo, mensagem) {
+      campo.setAttribute('aria-invalid', 'true');
+      feedback.innerHTML = `<p class="message" role="alert">${mensagem}</p>`;
+      campo.focus();
+    }
+
+    function limparEstado(campo) {
+      campo.removeAttribute('aria-invalid');
+      feedback.replaceChildren();
+    }
+
+    dataInput.addEventListener('input', () => limparEstado(dataInput));
+    cicloInput.addEventListener('input', () => limparEstado(cicloInput));
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      feedback.replaceChildren();
+      dataInput.removeAttribute('aria-invalid');
+      cicloInput.removeAttribute('aria-invalid');
+
+      if (!dataInput.value) {
+        mostrarErro(dataInput, 'Informe a data da última menstruação.');
+        return;
+      }
+
+      const hoje = hojeLocal();
+      const ultima = lerDataLocal(dataInput.value);
+      if (!ultima) {
+        mostrarErro(dataInput, 'Data inválida. Use o seletor ou digite no formato dia/mês/ano, por exemplo 25/10/2026.');
+        return;
+      }
+      if (ultima > hoje) {
+        mostrarErro(dataInput, 'A data não pode ser no futuro. Confira e tente novamente.');
+        return;
+      }
+      if (ultima < limiteMinimo()) {
+        mostrarErro(dataInput, 'A data é muito antiga. Informe o primeiro dia da última menstruação, dos últimos 12 meses.');
+        return;
+      }
+
+      const ciclo = Number(cicloInput.value);
+      if (!Number.isInteger(ciclo) || ciclo < 20 || ciclo > 40) {
+        mostrarErro(cicloInput, 'Informe a duração do ciclo como um número inteiro entre 20 e 40 dias.');
+        return;
+      }
+
+      // Se a próxima data calculada já passou, projeta os ciclos seguintes até chegar numa data futura.
+      let proxima = somarDias(ultima, ciclo);
+      let projetado = false;
+      while (proxima < hoje) {
+        proxima = somarDias(proxima, ciclo);
+        projetado = true;
+      }
+      const ovulacao = somarDias(proxima, -14);
+      const inicioFertil = somarDias(ovulacao, -5);
+      const fimFertil = somarDias(ovulacao, 1);
+
+      const notaProjecao = projetado
+        ? '<p>A data informada é de um ciclo anterior, então mostramos a projeção do próximo ciclo.</p>'
+        : '';
+
+      feedback.innerHTML = `
+        <section class="result" aria-labelledby="tituloResultado">
+          <h2 id="tituloResultado">Sua estimativa</h2>
+          <p>Próxima menstruação: <strong>${formatarData(proxima)}</strong></p>
+          <p>Período fértil estimado: <strong>${formatarData(inicioFertil)}</strong> a <strong>${formatarData(fimFertil)}</strong></p>
+          ${notaProjecao}
+          <p><small>Isto é apenas uma estimativa: ciclos variam e a ferramenta não deve ser usada como método contraceptivo.</small></p>
+        </section>`;
+
+      // Leva o resultado para a tela (útil em celulares com teclado aberto).
+      const reduzir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      feedback.scrollIntoView({ behavior: reduzir ? 'auto' : 'smooth', block: 'nearest' });
+    });
+  </script>
+</body>
+</html>
