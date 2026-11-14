@@ -45,6 +45,41 @@
 
     main { width: min(100%, 520px); margin-block: auto; }
 
+    /* Seletor de idioma (bandeiras) */
+    .lang-switch {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin: 0 0 12px;
+    }
+
+    .lang-switch button.lang-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      min-width: 52px;
+      min-height: 44px;
+      margin: 0;
+      padding: 6px 8px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .85);
+      box-shadow: 0 2px 8px rgba(72, 34, 54, .08);
+      cursor: pointer;
+    }
+
+    .lang-switch button.lang-btn:hover { background: #fff; border-color: rgba(165, 29, 93, .35); }
+    .lang-switch button.lang-btn[aria-pressed="true"] { background: #fff; border-color: var(--pink); }
+
+    .lang-btn svg {
+      display: block;
+      width: 30px;
+      height: 20px;
+      border-radius: 3px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, .15);
+    }
+
     .card {
       padding: clamp(22px, 6vw, 36px);
       border: 1px solid rgba(165, 29, 93, .12);
@@ -115,7 +150,7 @@
       line-height: 1.45;
     }
 
-    button {
+    button.submit {
       display: block;
       position: relative;
       z-index: 1;
@@ -135,8 +170,8 @@
       touch-action: manipulation;
     }
 
-    button:hover { background: var(--pink-dark); }
-    button:active { transform: scale(.99); }
+    button.submit:hover { background: var(--pink-dark); }
+    button.submit:active { transform: scale(.99); }
 
     #feedback { margin-top: 20px; }
 
@@ -285,34 +320,72 @@
 </head>
 <body>
   <main>
+    <!-- Seletor de idioma: bandeiras em SVG (emojis de bandeira não aparecem no Windows) -->
+    <nav class="lang-switch" id="langSwitch" aria-label="Idioma / Language / Idioma">
+      <button type="button" class="lang-btn" data-lang="pt" lang="pt-BR" aria-label="Português (Brasil)" title="Português (Brasil)" aria-pressed="false">
+        <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+          <rect width="30" height="20" fill="#009b3a"/>
+          <path d="M15 2.6 27.4 10 15 17.4 2.6 10z" fill="#fedf00"/>
+          <circle cx="15" cy="10" r="4.3" fill="#002776"/>
+          <path d="M10.9 9.2c2.9-.9 6.1-.4 8.4 1.3" stroke="#fff" stroke-width=".9" fill="none"/>
+        </svg>
+      </button>
+      <button type="button" class="lang-btn" data-lang="en" lang="en" aria-label="English (United States)" title="English (United States)" aria-pressed="false">
+        <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+          <rect width="30" height="20" fill="#b22234"/>
+          <g fill="#fff">
+            <rect y="1.54" width="30" height="1.54"/>
+            <rect y="4.62" width="30" height="1.54"/>
+            <rect y="7.69" width="30" height="1.54"/>
+            <rect y="10.77" width="30" height="1.54"/>
+            <rect y="13.85" width="30" height="1.54"/>
+            <rect y="16.92" width="30" height="1.54"/>
+          </g>
+          <rect width="12.5" height="10.77" fill="#3c3b6e"/>
+          <g fill="#fff">
+            <circle cx="2.2" cy="2" r=".55"/><circle cx="4.9" cy="2" r=".55"/><circle cx="7.6" cy="2" r=".55"/><circle cx="10.3" cy="2" r=".55"/>
+            <circle cx="3.5" cy="4.2" r=".55"/><circle cx="6.2" cy="4.2" r=".55"/><circle cx="8.9" cy="4.2" r=".55"/>
+            <circle cx="2.2" cy="6.4" r=".55"/><circle cx="4.9" cy="6.4" r=".55"/><circle cx="7.6" cy="6.4" r=".55"/><circle cx="10.3" cy="6.4" r=".55"/>
+            <circle cx="3.5" cy="8.6" r=".55"/><circle cx="6.2" cy="8.6" r=".55"/><circle cx="8.9" cy="8.6" r=".55"/>
+          </g>
+        </svg>
+      </button>
+      <button type="button" class="lang-btn" data-lang="es" lang="es" aria-label="Español (España)" title="Español (España)" aria-pressed="false">
+        <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false">
+          <rect width="30" height="20" fill="#aa151b"/>
+          <rect y="5" width="30" height="10" fill="#f1bf00"/>
+        </svg>
+      </button>
+    </nav>
+
     <section class="card" aria-labelledby="titulo">
       <p class="eyebrow">Ciclo em dia</p>
-      <h1 id="titulo">Calculadora do ciclo menstrual</h1>
-      <p class="intro">Informe os dados para ver uma estimativa da próxima menstruação e do período fértil.</p>
+      <h1 id="titulo" data-i18n="h1">Calculadora do ciclo menstrual</h1>
+      <p class="intro" data-i18n="intro">Informe os dados para ver uma estimativa da próxima menstruação e do período fértil.</p>
 
       <form id="formulario" novalidate>
         <div class="field">
-          <label for="dataUltima">Data da última menstruação</label>
+          <label for="dataUltima" data-i18n="lblData">Data da última menstruação</label>
           <input type="date" id="dataUltima" name="dataUltima" required autocomplete="off" aria-describedby="ajudaData">
-          <p class="hint" id="ajudaData">Use o primeiro dia do sangramento, dos últimos 12 meses. Se o campo for de texto, digite dia/mês/ano.</p>
+          <p class="hint" id="ajudaData" data-i18n="hintData">Use o primeiro dia do sangramento, dos últimos 12 meses. Se o campo for de texto, digite dia/mês/ano.</p>
         </div>
 
         <div class="field">
-          <label for="ciclo">Duração média do ciclo (dias)</label>
+          <label for="ciclo" data-i18n="lblCiclo">Duração média do ciclo (dias)</label>
           <input type="number" id="ciclo" name="ciclo" value="28" min="20" max="40" step="1" inputmode="numeric" required aria-describedby="ajudaCiclo">
-          <p class="hint" id="ajudaCiclo">Informe um número inteiro entre 20 e 40 dias.</p>
+          <p class="hint" id="ajudaCiclo" data-i18n="hintCiclo">Informe um número inteiro entre 20 e 40 dias.</p>
         </div>
 
-        <button type="submit">Calcular estimativa</button>
+        <button type="submit" class="submit" data-i18n="btnCalc">Calcular estimativa</button>
       </form>
 
       <div id="feedback" aria-live="polite" aria-atomic="true"></div>
 
-      <p class="notice"><strong>Importante:</strong> esta ferramenta fornece apenas uma estimativa. Ciclos podem variar; ela não confirma ovulação nem deve ser usada como método contraceptivo. Em caso de dúvidas, converse com um profissional de saúde.</p>
+      <p class="notice" data-i18n="notice"><strong>Importante:</strong> esta ferramenta fornece apenas uma estimativa. Ciclos podem variar; ela não confirma ovulação nem deve ser usada como método contraceptivo. Em caso de dúvidas, converse com um profissional de saúde.</p>
 
       <!-- ADSENSE: BLOCO INFERIOR (oculto por padrão). -->
-      <aside class="ad-slot" aria-label="Publicidade" hidden>
-        <p class="ad-label">Publicidade</p>
+      <aside class="ad-slot" aria-label="Publicidade" data-i18n-aria="ariaAd" hidden>
+        <p class="ad-label" data-i18n="adLabel">Publicidade</p>
         <!-- Exemplo:
         <ins class="adsbygoogle"
              style="display:block"
@@ -324,10 +397,10 @@
       </aside>
     </section>
 
-    <section class="info-section" aria-label="Informações sobre o ciclo menstrual e políticas do site">
+    <section class="info-section" aria-label="Informações sobre o ciclo menstrual e políticas do site" data-i18n-aria="ariaInfo">
       <details class="info-box">
-        <summary>Como funciona o cálculo do ciclo menstrual?</summary>
-        <div class="info-content">
+        <summary data-i18n="s1">Como funciona o cálculo do ciclo menstrual?</summary>
+        <div class="info-content" data-i18n="c1">
           <p>O ciclo menstrual é contado a partir do <strong>primeiro dia de sangramento</strong> de uma menstruação até o dia anterior ao início da próxima. Embora a média mais conhecida seja de 28 dias, ciclos regulares em mulheres adultas podem variar normalmente entre 21 e 35 dias (e até 40 dias em algumas fases da vida).</p>
           <p>Para estimar a próxima menstruação, a calculadora soma a duração média do seu ciclo à data do primeiro dia da última menstruação informada. Caso a data informada pertença a um ciclo anterior já concluído, a ferramenta projeta os ciclos seguintes para exibir a próxima estimativa futura.</p>
           <h3>Fases do ciclo menstrual</h3>
@@ -341,8 +414,8 @@
       </details>
 
       <details class="info-box">
-        <summary>O que é o período fértil e quando ocorre a ovulação?</summary>
-        <div class="info-content">
+        <summary data-i18n="s2">O que é o período fértil e quando ocorre a ovulação?</summary>
+        <div class="info-content" data-i18n="c2">
           <p>A <strong>ovulação</strong> ocorre, em média, cerca de 14 dias antes do início da próxima menstruação (considerando uma fase lútea padrão). Em um ciclo regular de 28 dias, por exemplo, a ovulação costuma acontecer por volta do 14º dia do ciclo; já em um ciclo de 32 dias, ocorre por volta do 18º dia.</p>
           <p>O <strong>período fértil</strong> (ou janela fértil) abrange os dias em que há maior probabilidade de gravidez. Como os espermatozoides podem sobreviver no trato reprodutor feminino por até 5 dias e o óvulo permanece viável por cerca de 24 horas após ser liberado, a janela fértil estimada compreende os <strong>5 dias anteriores à ovulação, o dia estimado da ovulação e o dia seguinte</strong>.</p>
           <p>Sinais naturais do corpo, como o aumento da secreção vaginal transparente (semelhante à clara de ovo) e uma leve elevação na temperatura corporal basal, também costumam acompanhar essa fase.</p>
@@ -350,8 +423,8 @@
       </details>
 
       <details class="info-box">
-        <summary>Perguntas frequentes e quando procurar orientação médica</summary>
-        <div class="info-content">
+        <summary data-i18n="s3">Perguntas frequentes e quando procurar orientação médica</summary>
+        <div class="info-content" data-i18n="c3">
           <h3>Por que a minha menstruação pode atrasar ou variar?</h3>
           <p>Mesmo quem possui ciclos regulares pode apresentar variações ocasionais de alguns dias. Estresse emocional, alterações na rotina de sono, viagens, mudanças na alimentação, prática intensa de exercícios físicos, uso de medicamentos, pós-parto, amamentação, adolescência e perimenopausa podem alterar o momento da ovulação e, consequentemente, a data da menstruação.</p>
           <h3>Posso usar a calculadora para evitar gravidez?</h3>
@@ -362,25 +435,253 @@
       </details>
 
       <details class="info-box">
-        <summary>Política de Privacidade, Cookies e Termos de Uso</summary>
-        <div class="info-content">
+        <summary data-i18n="s4">Política de Privacidade, Cookies e Termos de Uso</summary>
+        <div class="info-content" data-i18n="c4">
           <h3>1. Processamento local e privacidade dos seus dados</h3>
           <p>O site <strong>Ciclo em Dia</strong> (<code>cicloemdia.com.br</code>) foi desenvolvido para funcionar integralmente no navegador do seu dispositivo. As datas e a duração do ciclo que você digita na calculadora são processadas apenas localmente no seu aparelho para exibir o resultado na tela e <strong>nunca são enviadas, armazenadas ou compartilhadas</strong> com servidores externos.</p>
-          <h3>2. Publicidade e uso de cookies (Google AdSense)</h3>
+          <h3>2. Estatísticas de acesso (Google Analytics)</h3>
+          <p>Podemos usar o Google Analytics para medir estatísticas de acesso, como páginas visitadas, tipo de dispositivo e país de origem. Essas estatísticas <strong>não incluem</strong> as datas nem a duração do ciclo que você informa na calculadora.</p>
+          <h3>3. Publicidade e uso de cookies (Google AdSense)</h3>
           <p>Para manter a ferramenta gratuita, este site pode exibir anúncios fornecidos pelo <strong>Google AdSense</strong>. O Google e seus parceiros utilizam cookies (como o cookie DART e identificadores semelhantes) para veicular anúncios com base nas suas visitas a este e a outros sites na internet.</p>
           <p>Você pode desativar a publicidade personalizada a qualquer momento acessando as Configurações de Anúncios da sua Conta do Google (<code>adssettings.google.com</code>) ou gerenciando as permissões de cookies diretamente no seu navegador.</p>
-          <h3>3. Caráter informativo (Isenção de responsabilidade médica)</h3>
+          <h3>4. Preferência de idioma</h3>
+          <p>Ao escolher um idioma pelas bandeiras, a sua escolha é guardada apenas no seu navegador (armazenamento local) para que o site abra no mesmo idioma na próxima visita. Essa informação não é enviada a nenhum servidor.</p>
+          <h3>5. Caráter informativo (Isenção de responsabilidade médica)</h3>
           <p>Todo o conteúdo e os cálculos disponibilizados no Ciclo em Dia possuem finalidade exclusivamente educativa e informativa, não substituindo consulta, diagnóstico ou orientação de médicos, enfermeiros ou outros profissionais de saúde qualificados.</p>
         </div>
       </details>
     </section>
 
     <footer>
-      <p>© Ciclo em Dia (cicloemdia.com.br) — Ferramenta informativa de saúde menstrual.</p>
+      <p data-i18n="footer">© Ciclo em Dia (cicloemdia.com.br) — Ferramenta informativa de saúde menstrual.</p>
     </footer>
   </main>
 
   <script>
+    /* ================= i18n ================= */
+    const LANGS = ['pt', 'en', 'es'];
+    const HTML_LANG = { pt: 'pt-BR', en: 'en', es: 'es' };
+    const DATE_LOCALE = { pt: 'pt-BR', en: 'en-US', es: 'es-ES' };
+    const STORAGE_KEY = 'ciclo_lang';
+
+    // Mensagens dinâmicas (resultado/erros) em português; o restante do português é lido do próprio HTML.
+    const PT_EXTRA = {
+      errNoDate: 'Informe a data da última menstruação.',
+      errInvalid: 'Data inválida. Use o seletor ou digite no formato dia/mês/ano, por exemplo 25/10/2026.',
+      errFuture: 'A data não pode ser no futuro. Confira e tente novamente.',
+      errOld: 'A data é muito antiga. Informe o primeiro dia da última menstruação, dos últimos 12 meses.',
+      errCycle: 'Informe a duração do ciclo como um número inteiro entre 20 e 40 dias.',
+      resTitle: 'Sua estimativa',
+      resNext: 'Próxima menstruação:',
+      resFertile: 'Período fértil estimado:',
+      resTo: 'a',
+      resProj: 'A data informada é de um ciclo anterior, então mostramos a projeção do próximo ciclo.',
+      resSmall: 'Isto é apenas uma estimativa: ciclos variam e a ferramenta não deve ser usada como método contraceptivo.',
+      ariaLang: 'Idioma'
+    };
+
+    const DICT = { pt: {}, en: {}, es: {} };
+
+    DICT.en = {
+      title: 'Ciclo em Dia — Menstrual Cycle & Fertile Window Calculator',
+      desc: 'Menstrual cycle and fertile window calculator. Estimate your next period and ovulation day, and find answers about menstrual health.',
+      h1: 'Menstrual cycle calculator',
+      intro: 'Enter your details to see an estimate of your next period and your fertile window.',
+      lblData: 'First day of your last period',
+      hintData: 'Use the first day of bleeding, within the last 12 months. If the field is plain text, type day/month/year.',
+      lblCiclo: 'Average cycle length (days)',
+      hintCiclo: 'Enter a whole number between 20 and 40 days.',
+      btnCalc: 'Calculate estimate',
+      notice: '<strong>Important:</strong> this tool provides an estimate only. Cycles can vary; it does not confirm ovulation and must not be used as a method of birth control. If you have questions, talk to a healthcare professional.',
+      adLabel: 'Advertisement',
+      ariaAd: 'Advertisement',
+      ariaInfo: 'Information about the menstrual cycle and site policies',
+      ariaLang: 'Language',
+      footer: '© Ciclo em Dia (cicloemdia.com.br) — Informational menstrual health tool.',
+      errNoDate: 'Please enter the first day of your last period.',
+      errInvalid: 'Invalid date. Use the date picker or type it as day/month/year, for example 25/10/2026.',
+      errFuture: 'The date cannot be in the future. Please check it and try again.',
+      errOld: 'The date is too old. Enter the first day of your last period, within the last 12 months.',
+      errCycle: 'Enter the cycle length as a whole number between 20 and 40 days.',
+      resTitle: 'Your estimate',
+      resNext: 'Next period:',
+      resFertile: 'Estimated fertile window:',
+      resTo: 'to',
+      resProj: 'The date you entered belongs to an earlier cycle, so we are showing the projection for the next cycle.',
+      resSmall: 'This is only an estimate: cycles vary and this tool must not be used as a method of birth control.',
+      s1: 'How is the menstrual cycle calculated?',
+      c1: `
+          <p>The menstrual cycle is counted from the <strong>first day of bleeding</strong> of one period up to the day before the next one begins. Although the best-known average is 28 days, regular cycles in adult women can normally range from 21 to 35 days (and up to 40 days at some stages of life).</p>
+          <p>To estimate your next period, the calculator adds your average cycle length to the first day of the last period you entered. If the date you entered belongs to an earlier, already completed cycle, the tool projects the following cycles to show the next future estimate.</p>
+          <h3>Phases of the menstrual cycle</h3>
+          <ul>
+            <li><strong>Menstrual phase:</strong> the days of bleeding, when the lining of the uterus (endometrium) is shed.</li>
+            <li><strong>Follicular phase:</strong> starts on the first day of the period and lasts until ovulation. During this time, the ovarian follicles mature and the uterus prepares again.</li>
+            <li><strong>Ovulation:</strong> release of the mature egg from the ovary, which then travels toward the fallopian tubes.</li>
+            <li><strong>Luteal phase:</strong> the time between ovulation and the start of the next period. It tends to be more constant in length, around 14 days.</li>
+          </ul>`,
+      s2: 'What is the fertile window and when does ovulation occur?',
+      c2: `
+          <p><strong>Ovulation</strong> occurs, on average, about 14 days before the start of the next period (assuming a standard luteal phase). In a regular 28-day cycle, for example, ovulation usually happens around day 14 of the cycle; in a 32-day cycle, around day 18.</p>
+          <p>The <strong>fertile window</strong> covers the days with the highest chance of pregnancy. Because sperm can survive in the female reproductive tract for up to 5 days and the egg remains viable for about 24 hours after release, the estimated fertile window includes the <strong>5 days before ovulation, the estimated day of ovulation and the day after</strong>.</p>
+          <p>Natural body signs, such as an increase in clear vaginal discharge (similar to egg white) and a slight rise in basal body temperature, often accompany this phase.</p>`,
+      s3: 'Frequently asked questions and when to seek medical advice',
+      c3: `
+          <h3>Why can my period be late or vary?</h3>
+          <p>Even people with regular cycles can have occasional variations of a few days. Emotional stress, changes in sleep routine, travel, changes in diet, intense physical exercise, medications, the postpartum period, breastfeeding, adolescence and perimenopause can change the timing of ovulation and, consequently, the date of the period.</p>
+          <h3>Can I use the calculator to avoid pregnancy?</h3>
+          <p><strong>No.</strong> Methods based only on a calendar (such as the rhythm method) have a high failure rate because ovulation can come earlier or later from one month to the next without warning. For safe contraception or family planning, consult a healthcare professional (a gynecologist, or a nurse at your local primary care clinic).</p>
+          <h3>When should I seek medical care?</h3>
+          <p>It is advisable to seek a professional evaluation if your cycles are often shorter than 21 days or longer than 35 days, if you have no period for more than 3 months (without pregnancy), if bleeding is very heavy or prolonged (more than 7 to 8 days), if you have bleeding outside your period, or if you have severe pelvic pain that interferes with daily activities.</p>`,
+      s4: 'Privacy Policy, Cookies and Terms of Use',
+      c4: `
+          <h3>1. Local processing and privacy of your data</h3>
+          <p>The <strong>Ciclo em Dia</strong> website (<code>cicloemdia.com.br</code>) was designed to run entirely in your device's browser. The dates and cycle length you enter in the calculator are processed only locally on your device to show the result on screen and are <strong>never sent, stored or shared</strong> with external servers.</p>
+          <h3>2. Traffic statistics (Google Analytics)</h3>
+          <p>We may use Google Analytics to measure traffic statistics, such as pages visited, device type and country of origin. These statistics <strong>do not include</strong> the dates or cycle length you enter in the calculator.</p>
+          <h3>3. Advertising and cookies (Google AdSense)</h3>
+          <p>To keep the tool free, this site may display ads served by <strong>Google AdSense</strong>. Google and its partners use cookies (such as the DART cookie and similar identifiers) to serve ads based on your visits to this and other sites on the internet.</p>
+          <p>You can turn off personalized advertising at any time by visiting the Ads Settings of your Google Account (<code>adssettings.google.com</code>) or by managing cookie permissions directly in your browser.</p>
+          <h3>4. Language preference</h3>
+          <p>When you choose a language using the flags, your choice is saved only in your browser (local storage) so the site opens in the same language on your next visit. This information is not sent to any server.</p>
+          <h3>5. Informational purpose (medical disclaimer)</h3>
+          <p>All content and calculations provided by Ciclo em Dia are for educational and informational purposes only and do not replace consultation, diagnosis or guidance from doctors, nurses or other qualified healthcare professionals.</p>`
+    };
+
+    DICT.es = {
+      title: 'Ciclo em Dia — Calculadora del Ciclo Menstrual y Días Fértiles',
+      desc: 'Calculadora del ciclo menstrual y de los días fértiles. Descubre la fecha estimada de tu próxima menstruación, el día de la ovulación y resuelve tus dudas sobre salud menstrual.',
+      h1: 'Calculadora del ciclo menstrual',
+      intro: 'Introduce tus datos para ver una estimación de tu próxima menstruación y de tus días fértiles.',
+      lblData: 'Fecha de tu última menstruación',
+      hintData: 'Usa el primer día del sangrado, dentro de los últimos 12 meses. Si el campo es de texto, escribe día/mes/año.',
+      lblCiclo: 'Duración media del ciclo (días)',
+      hintCiclo: 'Introduce un número entero entre 20 y 40 días.',
+      btnCalc: 'Calcular estimación',
+      notice: '<strong>Importante:</strong> esta herramienta ofrece solo una estimación. Los ciclos pueden variar; no confirma la ovulación ni debe usarse como método anticonceptivo. Si tienes dudas, consulta con un profesional de la salud.',
+      adLabel: 'Publicidad',
+      ariaAd: 'Publicidad',
+      ariaInfo: 'Información sobre el ciclo menstrual y políticas del sitio',
+      ariaLang: 'Idioma',
+      footer: '© Ciclo em Dia (cicloemdia.com.br) — Herramienta informativa de salud menstrual.',
+      errNoDate: 'Introduce la fecha de tu última menstruación.',
+      errInvalid: 'Fecha no válida. Usa el selector o escríbela en formato día/mes/año, por ejemplo 25/10/2026.',
+      errFuture: 'La fecha no puede ser futura. Revísala e inténtalo de nuevo.',
+      errOld: 'La fecha es demasiado antigua. Introduce el primer día de tu última menstruación, dentro de los últimos 12 meses.',
+      errCycle: 'Introduce la duración del ciclo como un número entero entre 20 y 40 días.',
+      resTitle: 'Tu estimación',
+      resNext: 'Próxima menstruación:',
+      resFertile: 'Días fértiles estimados:',
+      resTo: 'al',
+      resProj: 'La fecha introducida pertenece a un ciclo anterior, por eso mostramos la proyección del próximo ciclo.',
+      resSmall: 'Esto es solo una estimación: los ciclos varían y la herramienta no debe usarse como método anticonceptivo.',
+      s1: '¿Cómo se calcula el ciclo menstrual?',
+      c1: `
+          <p>El ciclo menstrual se cuenta desde el <strong>primer día de sangrado</strong> de una menstruación hasta el día anterior al inicio de la siguiente. Aunque el promedio más conocido es de 28 días, los ciclos regulares en mujeres adultas pueden variar normalmente entre 21 y 35 días (e incluso hasta 40 días en algunas etapas de la vida).</p>
+          <p>Para estimar la próxima menstruación, la calculadora suma la duración media de tu ciclo a la fecha del primer día de la última menstruación indicada. Si la fecha pertenece a un ciclo anterior ya terminado, la herramienta proyecta los ciclos siguientes para mostrar la próxima estimación futura.</p>
+          <h3>Fases del ciclo menstrual</h3>
+          <ul>
+            <li><strong>Fase menstrual:</strong> corresponde a los días de sangrado, en los que se elimina el revestimiento del útero (endometrio).</li>
+            <li><strong>Fase folicular:</strong> comienza el primer día de la menstruación y llega hasta la ovulación. En este período maduran los folículos ováricos y el útero vuelve a prepararse.</li>
+            <li><strong>Ovulación:</strong> liberación del óvulo maduro por el ovario, que se dirige hacia las trompas de Falopio.</li>
+            <li><strong>Fase lútea:</strong> período entre la ovulación y el inicio de la siguiente menstruación. Suele tener una duración más constante, de alrededor de 14 días.</li>
+          </ul>`,
+      s2: '¿Qué son los días fértiles y cuándo ocurre la ovulación?',
+      c2: `
+          <p>La <strong>ovulación</strong> ocurre, en promedio, unos 14 días antes del inicio de la próxima menstruación (considerando una fase lútea estándar). En un ciclo regular de 28 días, por ejemplo, la ovulación suele producirse alrededor del día 14 del ciclo; en un ciclo de 32 días, alrededor del día 18.</p>
+          <p>Los <strong>días fértiles</strong> (o ventana fértil) abarcan los días con mayor probabilidad de embarazo. Como los espermatozoides pueden sobrevivir en el aparato reproductor femenino hasta 5 días y el óvulo permanece viable unas 24 horas tras su liberación, la ventana fértil estimada comprende los <strong>5 días anteriores a la ovulación, el día estimado de la ovulación y el día siguiente</strong>.</p>
+          <p>Algunas señales naturales del cuerpo, como el aumento del flujo vaginal transparente (similar a la clara de huevo) y una leve elevación de la temperatura corporal basal, suelen acompañar esta fase.</p>`,
+      s3: 'Preguntas frecuentes y cuándo buscar atención médica',
+      c3: `
+          <h3>¿Por qué mi menstruación puede retrasarse o variar?</h3>
+          <p>Incluso quienes tienen ciclos regulares pueden presentar variaciones ocasionales de algunos días. El estrés emocional, los cambios en la rutina de sueño, los viajes, los cambios en la alimentación, el ejercicio físico intenso, el uso de medicamentos, el posparto, la lactancia, la adolescencia y la perimenopausia pueden alterar el momento de la ovulación y, por lo tanto, la fecha de la menstruación.</p>
+          <h3>¿Puedo usar la calculadora para evitar un embarazo?</h3>
+          <p><strong>No.</strong> Los métodos basados solo en el calendario (como el método del ritmo) tienen una tasa de fallo alta, porque la ovulación puede adelantarse o retrasarse de un mes a otro sin previo aviso. Para una anticoncepción segura o para la planificación reproductiva, consulta con un profesional de la salud (ginecólogo/a o enfermero/a de tu centro de salud).</p>
+          <h3>¿Cuándo debo buscar atención médica?</h3>
+          <p>Se recomienda buscar una evaluación profesional si los ciclos son con frecuencia más cortos de 21 días o más largos de 35 días, si no hay menstruación durante más de 3 meses (sin embarazo), si el sangrado es muy abundante o prolongado (más de 7 a 8 días), si hay sangrados fuera del período menstrual o si hay dolores pélvicos intensos que impidan las actividades diarias.</p>`,
+      s4: 'Política de Privacidad, Cookies y Términos de Uso',
+      c4: `
+          <h3>1. Procesamiento local y privacidad de tus datos</h3>
+          <p>El sitio <strong>Ciclo em Dia</strong> (<code>cicloemdia.com.br</code>) fue diseñado para funcionar íntegramente en el navegador de tu dispositivo. Las fechas y la duración del ciclo que introduces en la calculadora se procesan solo de forma local en tu dispositivo para mostrar el resultado en pantalla y <strong>nunca se envían, almacenan ni comparten</strong> con servidores externos.</p>
+          <h3>2. Estadísticas de acceso (Google Analytics)</h3>
+          <p>Podemos usar Google Analytics para medir estadísticas de acceso, como las páginas visitadas, el tipo de dispositivo y el país de origen. Estas estadísticas <strong>no incluyen</strong> las fechas ni la duración del ciclo que introduces en la calculadora.</p>
+          <h3>3. Publicidad y uso de cookies (Google AdSense)</h3>
+          <p>Para mantener la herramienta gratuita, este sitio puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Google y sus socios utilizan cookies (como la cookie DART e identificadores similares) para mostrar anuncios según tus visitas a este y otros sitios de internet.</p>
+          <p>Puedes desactivar la publicidad personalizada en cualquier momento accediendo a la Configuración de anuncios de tu cuenta de Google (<code>adssettings.google.com</code>) o gestionando los permisos de cookies directamente en tu navegador.</p>
+          <h3>4. Preferencia de idioma</h3>
+          <p>Cuando eliges un idioma con las banderas, tu elección se guarda solo en tu navegador (almacenamiento local) para que el sitio se abra en el mismo idioma en tu próxima visita. Esta información no se envía a ningún servidor.</p>
+          <h3>5. Carácter informativo (descargo de responsabilidad médica)</h3>
+          <p>Todo el contenido y los cálculos ofrecidos en Ciclo em Dia tienen una finalidad exclusivamente educativa e informativa y no sustituyen la consulta, el diagnóstico ni la orientación de médicos, enfermeros u otros profesionales de la salud cualificados.</p>`
+    };
+
+    /* O português é capturado do HTML original (fonte única da verdade para o idioma padrão). */
+    const textEls = Array.from(document.querySelectorAll('[data-i18n]'));
+    const ariaEls = Array.from(document.querySelectorAll('[data-i18n-aria]'));
+    const metaDesc = document.querySelector('meta[name="description"]');
+
+    textEls.forEach((el) => { DICT.pt[el.dataset.i18n] = el.innerHTML.trim(); });
+    ariaEls.forEach((el) => { DICT.pt[el.dataset.i18nAria] = el.getAttribute('aria-label'); });
+    DICT.pt.title = document.title;
+    DICT.pt.desc = metaDesc.getAttribute('content');
+    Object.assign(DICT.pt, PT_EXTRA);
+
+    let lang = 'pt';
+    let estado = null; // { tipo: 'erro', campo, chave } | { tipo: 'resultado', ... }
+
+    function t(chave) {
+      return (DICT[lang] && DICT[lang][chave]) || DICT.pt[chave] || '';
+    }
+
+    function guardarIdioma(l) {
+      try { localStorage.setItem(STORAGE_KEY, l); } catch (e) { /* ignora */ }
+    }
+
+    function detectarIdioma() {
+      // 1) ?lang=xx na URL (útil para compartilhar links)
+      try {
+        const q = new URLSearchParams(location.search).get('lang');
+        if (q && LANGS.includes(q.toLowerCase().slice(0, 2))) return q.toLowerCase().slice(0, 2);
+      } catch (e) { /* ignora */ }
+      // 2) escolha salva anteriormente
+      try {
+        const salvo = localStorage.getItem(STORAGE_KEY);
+        if (LANGS.includes(salvo)) return salvo;
+      } catch (e) { /* ignora */ }
+      // 3) idioma do navegador: primeiro idioma preferido que seja suportado
+      const lista = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || ''];
+      for (const l of lista) {
+        const cod = String(l).toLowerCase().slice(0, 2);
+        if (LANGS.includes(cod)) return cod;
+      }
+      // 4) padrão para idiomas não suportados
+      return 'en';
+    }
+
+    function aplicarIdioma(novo, salvar) {
+      if (!LANGS.includes(novo)) novo = 'en';
+      lang = novo;
+      document.documentElement.lang = HTML_LANG[lang];
+      document.title = t('title');
+      metaDesc.setAttribute('content', t('desc'));
+
+      textEls.forEach((el) => { el.innerHTML = t(el.dataset.i18n); });
+      ariaEls.forEach((el) => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+      document.getElementById('langSwitch').setAttribute('aria-label', t('ariaLang'));
+
+      document.querySelectorAll('.lang-btn').forEach((b) => {
+        b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+      });
+
+      if (salvar) guardarIdioma(lang);
+      renderEstado();
+    }
+
+    document.getElementById('langSwitch').addEventListener('click', (e) => {
+      const btn = e.target.closest('.lang-btn');
+      if (btn) aplicarIdioma(btn.dataset.lang, true);
+    });
+
+    /* ================= Calculadora ================= */
     const formulario = document.getElementById('formulario');
     const dataInput = document.getElementById('dataUltima');
     const cicloInput = document.getElementById('ciclo');
@@ -428,18 +729,41 @@
     }
 
     function formatarData(data) {
-      return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }).format(data);
+      return new Intl.DateTimeFormat(DATE_LOCALE[lang], { day: 'numeric', month: 'long', year: 'numeric' }).format(data);
     }
 
-    function mostrarErro(campo, mensagem) {
+    // Desenha erro/resultado conforme o idioma atual (também usado ao trocar de idioma).
+    function renderEstado() {
+      if (!estado) {
+        feedback.replaceChildren();
+        return;
+      }
+      if (estado.tipo === 'erro') {
+        feedback.innerHTML = `<p class="message" role="alert">${t(estado.chave)}</p>`;
+        return;
+      }
+      const nota = estado.projetado ? `<p>${t('resProj')}</p>` : '';
+      feedback.innerHTML = `
+        <section class="result" aria-labelledby="tituloResultado">
+          <h2 id="tituloResultado">${t('resTitle')}</h2>
+          <p>${t('resNext')} <strong>${formatarData(estado.proxima)}</strong></p>
+          <p>${t('resFertile')} <strong>${formatarData(estado.inicioFertil)}</strong> ${t('resTo')} <strong>${formatarData(estado.fimFertil)}</strong></p>
+          ${nota}
+          <p><small>${t('resSmall')}</small></p>
+        </section>`;
+    }
+
+    function mostrarErro(campo, chave) {
       campo.setAttribute('aria-invalid', 'true');
-      feedback.innerHTML = `<p class="message" role="alert">${mensagem}</p>`;
+      estado = { tipo: 'erro', chave };
+      renderEstado();
       campo.focus();
     }
 
     function limparEstado(campo) {
       campo.removeAttribute('aria-invalid');
-      feedback.replaceChildren();
+      estado = null;
+      renderEstado();
     }
 
     dataInput.addEventListener('input', () => limparEstado(dataInput));
@@ -447,33 +771,34 @@
 
     formulario.addEventListener('submit', (evento) => {
       evento.preventDefault();
-      feedback.replaceChildren();
+      estado = null;
+      renderEstado();
       dataInput.removeAttribute('aria-invalid');
       cicloInput.removeAttribute('aria-invalid');
 
       if (!dataInput.value) {
-        mostrarErro(dataInput, 'Informe a data da última menstruação.');
+        mostrarErro(dataInput, 'errNoDate');
         return;
       }
 
       const hoje = hojeLocal();
       const ultima = lerDataLocal(dataInput.value);
       if (!ultima) {
-        mostrarErro(dataInput, 'Data inválida. Use o seletor ou digite no formato dia/mês/ano, por exemplo 25/10/2026.');
+        mostrarErro(dataInput, 'errInvalid');
         return;
       }
       if (ultima > hoje) {
-        mostrarErro(dataInput, 'A data não pode ser no futuro. Confira e tente novamente.');
+        mostrarErro(dataInput, 'errFuture');
         return;
       }
       if (ultima < limiteMinimo()) {
-        mostrarErro(dataInput, 'A data é muito antiga. Informe o primeiro dia da última menstruação, dos últimos 12 meses.');
+        mostrarErro(dataInput, 'errOld');
         return;
       }
 
       const ciclo = Number(cicloInput.value);
       if (!Number.isInteger(ciclo) || ciclo < 20 || ciclo > 40) {
-        mostrarErro(cicloInput, 'Informe a duração do ciclo como um número inteiro entre 20 e 40 dias.');
+        mostrarErro(cicloInput, 'errCycle');
         return;
       }
 
@@ -485,25 +810,21 @@
       }
 
       const ovulacao = somarDias(proxima, -14);
-      const inicioFertil = somarDias(ovulacao, -5);
-      const fimFertil = somarDias(ovulacao, 1);
-
-      const notaProjecao = projetado
-        ? '<p>A data informada é de um ciclo anterior, então mostramos a projeção do próximo ciclo.</p>'
-        : '';
-
-      feedback.innerHTML = `
-        <section class="result" aria-labelledby="tituloResultado">
-          <h2 id="tituloResultado">Sua estimativa</h2>
-          <p>Próxima menstruação: <strong>${formatarData(proxima)}</strong></p>
-          <p>Período fértil estimado: <strong>${formatarData(inicioFertil)}</strong> a <strong>${formatarData(fimFertil)}</strong></p>
-          ${notaProjecao}
-          <p><small>Isto é apenas uma estimativa: ciclos variam e a ferramenta não deve ser usada como método contraceptivo.</small></p>
-        </section>`;
+      estado = {
+        tipo: 'resultado',
+        proxima,
+        inicioFertil: somarDias(ovulacao, -5),
+        fimFertil: somarDias(ovulacao, 1),
+        projetado
+      };
+      renderEstado();
 
       const reduzir = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       feedback.scrollIntoView({ behavior: reduzir ? 'auto' : 'smooth', block: 'nearest' });
     });
+
+    /* Inicialização: detecta o idioma e aplica (sem gravar; só grava quando a pessoa clica numa bandeira). */
+    aplicarIdioma(detectarIdioma(), false);
   </script>
 </body>
 </html>
