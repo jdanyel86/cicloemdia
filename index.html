@@ -365,9 +365,9 @@
 
       <form id="formulario" novalidate>
         <div class="field">
-          <label for="dataUltima" data-i18n="lblData">Data da última menstruação</label>
+          <label for="dataUltima" data-i18n="lblData">Primeiro dia da menstruação (passada ou prevista)</label>
           <input type="date" id="dataUltima" name="dataUltima" required autocomplete="off" aria-describedby="ajudaData">
-          <p class="hint" id="ajudaData" data-i18n="hintData">Use o primeiro dia do sangramento, dos últimos 12 meses. Se o campo for de texto, digite dia/mês/ano.</p>
+          <p class="hint" id="ajudaData" data-i18n="hintData">Informe o primeiro dia do sangramento: pode ser de até 12 meses atrás ou uma data futura prevista (até 12 meses à frente). Se o campo for de texto, digite dia/mês/ano.</p>
         </div>
 
         <div class="field">
@@ -466,10 +466,11 @@
 
     // Mensagens dinâmicas (resultado/erros) em português; o restante do português é lido do próprio HTML.
     const PT_EXTRA = {
-      errNoDate: 'Informe a data da última menstruação.',
+      errNoDate: 'Informe o primeiro dia da menstruação.',
       errInvalid: 'Data inválida. Use o seletor ou digite no formato dia/mês/ano, por exemplo 25/10/2026.',
-      errFuture: 'A data não pode ser no futuro. Confira e tente novamente.',
-      errOld: 'A data é muito antiga. Informe o primeiro dia da última menstruação, dos últimos 12 meses.',
+      errFar: 'A data está muito distante no futuro. Informe uma data de até 12 meses à frente.',
+      errOld: 'A data é muito antiga. Informe uma data dos últimos 12 meses ou uma data futura prevista.',
+      resFuture: 'Como a data informada é futura, mostramos a estimativa do ciclo que começa nessa data.',
       errCycle: 'Informe a duração do ciclo como um número inteiro entre 20 e 40 dias.',
       resTitle: 'Sua estimativa',
       resNext: 'Próxima menstruação:',
@@ -487,8 +488,8 @@
       desc: 'Menstrual cycle and fertile window calculator. Estimate your next period and ovulation day, and find answers about menstrual health.',
       h1: 'Menstrual cycle calculator',
       intro: 'Enter your details to see an estimate of your next period and your fertile window.',
-      lblData: 'First day of your last period',
-      hintData: 'Use the first day of bleeding, within the last 12 months. If the field is plain text, type day/month/year.',
+      lblData: 'First day of your period (past or expected)',
+      hintData: 'Enter the first day of bleeding: it can be up to 12 months ago or an expected future date (up to 12 months ahead). If the field is plain text, type day/month/year.',
       lblCiclo: 'Average cycle length (days)',
       hintCiclo: 'Enter a whole number between 20 and 40 days.',
       btnCalc: 'Calculate estimate',
@@ -498,10 +499,11 @@
       ariaInfo: 'Information about the menstrual cycle and site policies',
       ariaLang: 'Language',
       footer: '© Ciclo em Dia (cicloemdia.com.br) — Informational menstrual health tool.',
-      errNoDate: 'Please enter the first day of your last period.',
+      errNoDate: 'Please enter the first day of your period.',
       errInvalid: 'Invalid date. Use the date picker or type it as day/month/year, for example 25/10/2026.',
-      errFuture: 'The date cannot be in the future. Please check it and try again.',
-      errOld: 'The date is too old. Enter the first day of your last period, within the last 12 months.',
+      errFar: 'The date is too far in the future. Enter a date up to 12 months ahead.',
+      errOld: 'The date is too old. Enter a date within the last 12 months or an expected future date.',
+      resFuture: 'Since the date you entered is in the future, we are showing the estimate for the cycle that starts on that date.',
       errCycle: 'Enter the cycle length as a whole number between 20 and 40 days.',
       resTitle: 'Your estimate',
       resNext: 'Next period:',
@@ -553,8 +555,8 @@
       desc: 'Calculadora del ciclo menstrual y de los días fértiles. Descubre la fecha estimada de tu próxima menstruación, el día de la ovulación y resuelve tus dudas sobre salud menstrual.',
       h1: 'Calculadora del ciclo menstrual',
       intro: 'Introduce tus datos para ver una estimación de tu próxima menstruación y de tus días fértiles.',
-      lblData: 'Fecha de tu última menstruación',
-      hintData: 'Usa el primer día del sangrado, dentro de los últimos 12 meses. Si el campo es de texto, escribe día/mes/año.',
+      lblData: 'Primer día de la menstruación (pasada o prevista)',
+      hintData: 'Introduce el primer día del sangrado: puede ser de hasta 12 meses atrás o una fecha futura prevista (hasta 12 meses por delante). Si el campo es de texto, escribe día/mes/año.',
       lblCiclo: 'Duración media del ciclo (días)',
       hintCiclo: 'Introduce un número entero entre 20 y 40 días.',
       btnCalc: 'Calcular estimación',
@@ -564,10 +566,11 @@
       ariaInfo: 'Información sobre el ciclo menstrual y políticas del sitio',
       ariaLang: 'Idioma',
       footer: '© Ciclo em Dia (cicloemdia.com.br) — Herramienta informativa de salud menstrual.',
-      errNoDate: 'Introduce la fecha de tu última menstruación.',
+      errNoDate: 'Introduce el primer día de la menstruación.',
       errInvalid: 'Fecha no válida. Usa el selector o escríbela en formato día/mes/año, por ejemplo 25/10/2026.',
-      errFuture: 'La fecha no puede ser futura. Revísala e inténtalo de nuevo.',
-      errOld: 'La fecha es demasiado antigua. Introduce el primer día de tu última menstruación, dentro de los últimos 12 meses.',
+      errFar: 'La fecha es demasiado lejana en el futuro. Introduce una fecha de hasta 12 meses por delante.',
+      errOld: 'La fecha es demasiado antigua. Introduce una fecha de los últimos 12 meses o una fecha futura prevista.',
+      resFuture: 'Como la fecha introducida es futura, mostramos la estimación del ciclo que comienza en esa fecha.',
       errCycle: 'Introduce la duración del ciclo como un número entero entre 20 y 40 días.',
       resTitle: 'Tu estimación',
       resNext: 'Próxima menstruación:',
@@ -710,7 +713,13 @@
       return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
     }
 
-    dataInput.max = paraISO(hojeLocal());
+    function limiteMaximo() {
+      const d = hojeLocal();
+      d.setFullYear(d.getFullYear() + 1);
+      return d;
+    }
+
+    dataInput.max = paraISO(limiteMaximo());
     dataInput.min = paraISO(limiteMinimo());
 
     function lerDataLocal(valor) {
@@ -742,7 +751,7 @@
         feedback.innerHTML = `<p class="message" role="alert">${t(estado.chave)}</p>`;
         return;
       }
-      const nota = estado.projetado ? `<p>${t('resProj')}</p>` : '';
+      const nota = estado.projetado ? `<p>${t('resProj')}</p>` : (estado.futuro ? `<p>${t('resFuture')}</p>` : '');
       feedback.innerHTML = `
         <section class="result" aria-labelledby="tituloResultado">
           <h2 id="tituloResultado">${t('resTitle')}</h2>
@@ -787,8 +796,8 @@
         mostrarErro(dataInput, 'errInvalid');
         return;
       }
-      if (ultima > hoje) {
-        mostrarErro(dataInput, 'errFuture');
+      if (ultima > limiteMaximo()) {
+        mostrarErro(dataInput, 'errFar');
         return;
       }
       if (ultima < limiteMinimo()) {
@@ -815,7 +824,8 @@
         proxima,
         inicioFertil: somarDias(ovulacao, -5),
         fimFertil: somarDias(ovulacao, 1),
-        projetado
+        projetado,
+        futuro: ultima > hoje
       };
       renderEstado();
 
